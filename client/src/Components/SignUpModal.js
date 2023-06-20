@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import "../Styles/SignUpModal.css";
+
 axios.defaults.withCredentials = true;
 const SignUpModal = ({ show, handleClose }) => {
   const [name, setName] = useState('');

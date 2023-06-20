@@ -52,7 +52,7 @@ router.post("/games", async (req, res) => {
   try {
     const game = new Game({ name:name, link:link, image:image, categories:categories });
     const savedGame = await game.save();
-    res.status(201).json(savedGame);
+    res.status(201).json({success:true});
   } catch (err) {
     res.status(400).json({ error: "Bad request" });
   }

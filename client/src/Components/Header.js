@@ -4,6 +4,7 @@ import "../Styles/Header.css";
 
 const Header = ({
   isAdmin,
+  setIsAdmin,
   setAddGame,
   setIsFavourite,
   setLoggedIn,
@@ -46,6 +47,8 @@ const Header = ({
       const response = await axios.post('http://localhost:8800/auth/logout');
       if (response.data.success === true) {
         setLoggedIn(false); 
+        setIsAdmin(false);
+        handleFav(false)
       } else {
         // Handle other response statuses or error cases
       }

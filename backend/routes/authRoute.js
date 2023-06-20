@@ -92,6 +92,53 @@ router.post("/login", async (req, res, next) => {
       message: "Logged out successfully",
     });
   });
+
+
+  router.get('/status', async (req, res) => {
+    try {
+      const { cookie } = req.headers;
+  
+      if (!cookie) {
+        return res.status(401).json({
+          success: false,
+          message: 'Unauthorized: Access token is missing',
+        });
+      }
+  
+      try {
+        const cookieParts = cookie.split(';');
+        const decodedCookie = {};
+  
+        // Loop through cookie parts and extract key-value pairs
+        for (let i = 0; i < cookieParts.length; i++) {
+          const [key, value] = cookieParts[i].split('=');
+          decodedCookie[key.trim()] = value;
+        }
+  
+        const decodedToken = jwt.verify(decodedCookie.access_token, process.env.JWT_SECRET);
+        req.userId = decodedToken._id;
+        req.isAdmin = decodedToken.isAdmin === true;
+      } catch (error) {
+        return res.status(401).json({
+          success: false,
+          message: 'Unauthorized: Invalid access token',
+        });
+      }
+  
+      res.status(200).json({
+        success: true,
+        loggedIn: true, // User is logged in
+        isAdmin: req.isAdmin,
+      });
+    } catch (error) {
+      console.error('Error checking login status:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Error checking login status',
+      });
+    }
+  });
+  
   
   
   
